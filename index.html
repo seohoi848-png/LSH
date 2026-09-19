@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="사진과 파일로 질문하는 AI 학습 도우미" />
+    <title>SearchMate · AI 학습 도우미</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="SearchMate 홈">
+          <span class="brand-mark">S</span>
+          <span>SearchMate</span>
+        </a>
+        <div class="topbar-actions">
+          <span class="status-dot"><i></i> AI 학습 도우미</span>
+          <label class="color-picker" for="accentColor" title="화면 색상 변경">
+            <span aria-hidden="true">●</span>
+            <input id="accentColor" type="color" value="#6b57e8" aria-label="화면 메인 색상 선택" />
+          </label>
+          <button class="icon-button" id="themeToggle" type="button" aria-label="테마 전환">☼</button>
+        </div>
+      </header>
+
+      <main id="top">
+        <section class="hero">
+          <div>
+            <p class="eyebrow">오늘도 한 문제씩</p>
+            <h1>모르는 문제,<br /><em>함께 풀어봐요.</em></h1>
+            <p class="hero-copy">문제를 사진으로 찍거나 파일을 올려 보세요.<br />SearchMate가 답만이 아니라 이해할 수 있는 풀이까지 알려드려요.</p>
+          </div>
+          <div class="hero-orbit" aria-hidden="true">
+            <span class="orbit-card card-a">∑</span>
+            <span class="orbit-card card-b">가</span>
+            <span class="orbit-card card-c">A+</span>
+            <div class="orbit-core">✦</div>
+          </div>
+        </section>
+
+        <section class="quiz-builder panel" aria-label="맞춤 문제 만들기">
+          <div class="panel-heading">
+            <div>
+              <p class="section-label">NEW · 맞춤 학습</p>
+              <h2>내 학년과 단원으로 문제 풀기</h2>
+            </div>
+            <span class="step-count">문제 세트</span>
+          </div>
+          <div class="quiz-options">
+            <label>과목
+              <select id="quizSubjectSelect"></select>
+            </label>
+            <label>학년
+              <select id="gradeSelect"></select>
+            </label>
+            <label>풀 단원
+              <select id="unitSelect"></select>
+            </label>
+            <label>문제 수
+              <select id="countSelect">
+                <option value="10">10문제</option>
+                <option value="20">20문제</option>
+                <option value="30">30문제</option>
+                <option value="40">40문제</option>
+                <option value="50">50문제</option>
+              </select>
+            </label>
+          </div>
+          <button class="primary-button quiz-start" id="quizStart" type="button">문제 만들기 <b>→</b></button>
+          <div id="quizStatus" class="quiz-status" aria-live="polite"></div>
+          <div id="quizArea" class="quiz-area hidden"></div>
+        </section>
+
+        <section class="workspace" aria-label="문제 풀이 공간">
+          <div class="panel question-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="section-label">STEP 01</p>
+                <h2>어떤 과목인가요?</h2>
+              </div>
+              <span class="step-count">1 / 2</span>
+            </div>
+            <div class="subject-grid" role="radiogroup" aria-label="과목 선택">
+              <button class="subject active" data-subject="국어" type="button"><span>가</span>국어</button>
+              <button class="subject" data-subject="영어" type="button"><span>A</span>영어</button>
+              <button class="subject" data-subject="수학" type="button"><span>∑</span>수학</button>
+              <button class="subject" data-subject="과학" type="button"><span>⚗</span>과학</button>
+              <button class="subject" data-subject="역사" type="button"><span>◈</span>역사</button>
+              <button class="subject" data-subject="기타" type="button"><span>＋</span>기타</button>
+            </div>
+
+            <div class="divider"></div>
+            <div class="panel-heading upload-heading">
+              <div>
+                <p class="section-label">STEP 02</p>
+                <h2>문제를 보내주세요</h2>
+              </div>
+              <span class="step-count">2 / 2</span>
+            </div>
+
+            <label class="dropzone" id="dropzone" for="fileInput">
+              <input id="fileInput" type="file" accept="image/*,.jpg,.jpeg,.png,.webp,.gif,.pdf,.txt" />
+              <span class="upload-icon">↑</span>
+              <strong>사진을 끌어다 놓거나 눌러서 업로드</strong>
+              <small>JPG, PNG, WEBP, PDF, TXT · 최대 10MB</small>
+              <span class="file-name" id="fileName"></span>
+            </label>
+            <div class="or-line"><span>또는</span></div>
+            <label class="question-input-wrap" for="questionText">
+              <span>문제를 직접 입력해도 좋아요</span>
+              <textarea id="questionText" rows="3" placeholder="예) x² - 5x + 6 = 0의 해를 구하고 풀이를 설명해줘."></textarea>
+            </label>
+            <button class="primary-button" id="solveButton" type="button"><span>✦</span> AI에게 풀이 요청하기 <b>→</b></button>
+            <p class="privacy-note">🔒 업로드한 자료는 풀이를 위해서만 사용돼요.</p>
+          </div>
+
+          <div class="panel answer-panel" id="answerPanel">
+            <div class="answer-empty" id="answerEmpty">
+              <div class="empty-illustration"><span>?</span></div>
+              <h2>풀이가 여기에 나타나요</h2>
+              <p>왼쪽에서 과목을 선택하고<br />문제를 보내주면 시작할게요.</p>
+              <div class="tip"><span>✦</span><span><strong>Tip</strong><br />문제와 함께 “어디까지 이해했는지” 적어주면 더 정확하게 도와줄 수 있어요.</span></div>
+            </div>
+            <div class="answer-result hidden" id="answerResult">
+              <div class="result-header">
+                <div><p class="section-label">SEARCHMATE의 풀이</p><h2 id="resultTitle">수학 문제 풀이</h2></div>
+                <span class="confidence">확인 완료</span>
+              </div>
+              <div class="question-quote" id="resultQuestion"></div>
+              <div class="answer-box"><span class="answer-label">정답</span><strong id="resultAnswer"></strong></div>
+              <div class="solution" id="resultSolution"></div>
+              <div class="source-note" id="sourceNote"><span>◎</span> 기본 풀이 모드 · 필요하면 웹 검색형 AI 백엔드와 연결할 수 있어요.</div>
+              <div class="feedback-area">
+                <p>이 답이 맞지 않나요?</p>
+                <button class="feedback-button" id="wrongButton" type="button">아니요, 답이 틀렸어요 <span>↗</span></button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+      <footer><span>© 2026 SearchMate</span><span>답을 외우는 것보다, 이해하는 것이 먼저니까.</span></footer>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js?v=10"></script>
+  </body>
+</html>
