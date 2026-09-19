@@ -1,28 +1,79 @@
 # SearchMate
 
-사진·파일 또는 직접 입력한 문제를 과목별로 정리해 AI 풀이를 요청하는 학습 도우미 화면입니다.
+사진, PDF, 텍스트로 입력한 학습 문제를 AI가 풀이하고, 과목·학년·단원에 맞는 객관식 문제 세트를 생성해 주는 학습 도우미입니다.
 
-## 실행
+## 주요 기능
 
-프로젝트 폴더에서 아래처럼 AI 백엔드와 정적 파일 서버를 함께 실행하세요.
+- 국어, 영어, 수학, 과학, 사회 등 과목별 문제 풀이
+- 텍스트 직접 입력 및 이미지·PDF·TXT 파일 업로드
+- 풀이 과정과 최종 답을 단계별로 표시
+- 답변이 만족스럽지 않을 때 다른 풀이 요청
+- 학년·과목·단원을 선택해 10~50개의 객관식 문제 생성
+- 생성된 문제 채점 및 문항별 해설 제공
+- 밝은/어두운 테마와 강조 색상 설정
+- OpenAI Responses API를 이용한 텍스트·이미지·PDF 분석
 
-```bash
+## 실행 방법
+
+### 1. 준비
+
+- Node.js 18 이상
+- OpenAI API 키
+
+### 2. 환경변수 설정
+
+프로젝트 루트의 `.env.example`을 참고해 상위 폴더의 `.env` 파일을 작성합니다.
+
+```env
+OPENAI_API_KEY=여기에_API_키
+OPENAI_MODEL=gpt-4o-mini
+SEARCH_WEB=0
+PORT=5501
+```
+
+`.env` 파일은 `.gitignore`에 등록되어 있으므로 API 키를 GitHub에 올리지 않습니다.
+
+### 3. 서버 실행
+
+```powershell
 npm start
 ```
 
-그 다음 `http://localhost:5501`을 여세요. (VS Code Live Server로 5500에서 열어도 API는 5501로 연결됩니다.)
+브라우저에서 [http://localhost:5501](http://localhost:5501)을 엽니다.
 
-## AI 백엔드 연결
+VS Code Live Server로 프론트를 `5500` 포트에서 열어도 API는 `5501` 포트로 연결됩니다.
 
-`app.js`는 `POST /api/solve`를 호출하도록 준비되어 있습니다. 백엔드에서는 다음 JSON을 받아 AI 모델과 검색 도구를 호출한 뒤 같은 형태로 반환하면 됩니다.
+## 프로젝트 구조
 
-```json
-{
-  "title": "수학 문제 풀이",
-  "question": "문제 원문",
-  "answer": "최종 답",
-  "steps": ["풀이 1단계", "풀이 2단계"]
-}
-```
+| 파일 | 설명 |
+| --- | --- |
+| `index.html` | SearchMate 화면 구조 |
+| `styles.css` | 화면 디자인 및 반응형 스타일 |
+| `app.js` | 입력, 파일 업로드, 문제 풀이·퀴즈 UI 로직 |
+| `server.mjs` | 정적 파일 서버 및 OpenAI API 백엔드 |
+| `.env.example` | 환경변수 설정 예시 |
+| `SETUP.md` | AI 서버 설정 안내 |
+| `SearchMate.ino` | Arduino 관련 프로젝트 파일 |
 
-API 키는 반드시 서버 환경변수에 보관하고 브라우저 코드에 직접 넣지 마세요. 사용자가 “답이 틀렸어요”를 누르면 기존 답을 확정하지 않고 재검토 요청을 보내도록 백엔드에 `feedback: "incorrect"`를 추가해 확장할 수 있습니다.
+## API 엔드포인트
+
+### `POST /api/solve`
+
+문제 풀이를 요청합니다. 텍스트 문제는 `question`으로, 이미지와 PDF는 Base64 데이터로 전달합니다.
+
+### `POST /api/quiz`
+
+선택한 과목·학년·단원에 맞는 객관식 문제 세트를 생성합니다. 문제 수는 10, 20, 30, 40, 50개 중 하나입니다.
+
+## 보안 및 주의사항
+
+- OpenAI API 키를 `app.js`에 직접 입력하지 마세요.
+- 실제 `.env` 파일은 커밋하거나 공개 저장소에 업로드하지 마세요.
+- 이미지와 PDF 업로드에는 파일 크기 제한이 적용됩니다.
+- `SEARCH_WEB=1`로 설정하면 모델이 웹 검색 도구를 사용할 수 있습니다.
+
+## 기술 스택
+
+- HTML, CSS, Vanilla JavaScript
+- Node.js 내장 HTTP 서버
+- OpenAI Responses API
