@@ -51,6 +51,9 @@ VS Code Live Server로 프론트를 `5500` 포트에서 열어도 API는 `5501` 
 | `styles.css` | 화면 디자인 및 반응형 스타일 |
 | `app.js` | 입력, 파일 업로드, 문제 풀이·퀴즈 UI 로직 |
 | `server.mjs` | 정적 파일 서버 및 OpenAI API 백엔드 |
+| `api/solve.mjs` | Vercel용 문제 풀이 API 함수 |
+| `api/quiz.mjs` | Vercel용 문제 생성 API 함수 |
+| `api/_shared.mjs` | Vercel API 공통 유틸리티 |
 | `.env.example` | 환경변수 설정 예시 |
 | `SETUP.md` | AI 서버 설정 안내 |
 | `SearchMate.ino` | Arduino 관련 프로젝트 파일 |

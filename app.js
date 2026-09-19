@@ -1,7 +1,7 @@
 const state = { subject: '국어', file: null, fileText: '', fileData: '', uploadName: '', uploadType: '', retry: 0 };
 const $ = (selector) => document.querySelector(selector);
 // The UI may be served by VS Code Live Server on 5500 while the API runs on 5501.
-const API_BASE = window.SEARCHMATE_API_BASE || 'http://localhost:5501';
+const API_BASE = window.SEARCHMATE_API_BASE || (window.location.port === '5500' ? 'http://localhost:5501' : '');
 
 function apiError(error) {
   if (error instanceof TypeError && error.message === 'Failed to fetch') {
